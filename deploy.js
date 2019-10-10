@@ -4,7 +4,7 @@ const { interface, bytecode } = require('./compile');
 
 const provider = new HDWalletProvider(
     'call glow acoustic vintage front ring trade assist shuffle mimic volume reject',
-    'https://rinkeby.infura.io/v3/2fc149ec3eee4cc68d079736cd5cd351'
+    'https://rinkeby.infura.io/v3/3a2f912718d641dd8e842ca2c6d1f882'
 );
 
 const web3 = new Web3(provider);
@@ -14,12 +14,10 @@ const deploy = async () => {
 
     console.log('Attempting to deploy from account', accounts[0]);
 
-
     const result = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({data: bytecode, arguments: ['Educação']}) // add 0x bytecode
-    .send({gas: '1000000', from: accounts[0]}); // remove 'gas'
+    .deploy({ data: '0x' + bytecode, arguments: ['Educação'] })
+    .send({ from: accounts[0] });
 
-    console.log(interface);
     console.log('Contract deployed to', result.options.address);
 };
 

@@ -14,7 +14,7 @@ beforeEach(async () => {
     accounts = await web3.eth.getAccounts();
 
     bidding = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: '0x' +  bytecode, arguments: ['Educação']})
+    .deploy({ data: '0x' +  bytecode})
     .send({ from: accounts[0], gas: '1000000'})
 
     bidding.setProvider(provider);
@@ -23,20 +23,30 @@ beforeEach(async () => {
 describe('Bidding', () =>{
     it('deploys a contract', () =>{
         assert.ok(bidding.options.address);
-        // console.log(bidding);
+        console.log(bidding);
     });
-    // it('allows one account to enter', async () =>{
-    //     await bidding.methods.enter('Empresa 1', 2000).send({
-    //         from: accounts[0],
-    //         data: web3.utils.send()
-    // });
+    it('allows one account to enter', async () =>{
+        const nameOrgan = await bidding.methods.nameOrgan().call();
+        // assert.equal(nameOrgan, 'Educação');
+        console.log(nameOrgan);
+    });
+    it('name of the provider', async () => {
+        await bidding.methods.enter('Empresa 1',2000).send({ from: accounts[1], gas: '1000000'});
 
-        // const providers = await bidding.methods.getProviders().call({
-        //     from: accounts[0]
+        // const provider = await bidding.methods.getProviders().call({
+        //     from: accounts[0] 
         // });
-        // assert.equal(accounts[0], providers[0])
-        // assert.equal(1, providers.length)
-    // });
+        
+        // assert.equal(accounts[0], provider[0]);
+        // assert.equal(1, provider.length);
+    });
+    it(' pick lowest offer', async() => {
+        await bidding.methods.lowestOffer().send({ from: accounts[0]})
+    });
+
+    it(' pick winner', async() => {
+        await bidding.methods.pickWinner().send({ from: accounts[0]})
+    });
 
 
 
