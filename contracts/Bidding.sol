@@ -2,22 +2,24 @@ pragma solidity^0.4.17;
 
 contract Bidding{
     address public organ;
+    string public nameOrgan;
     
-    address[] provider;
+    address[] public provider;
     string[] public name;
     uint[] public value;
 
     uint i = 0;
     
-    function Bidding() public{
+    function Bidding(string _nameOrgan) public{
         organ = msg.sender;
+        nameOrgan = _nameOrgan;
     }
     
     function enter(string _name) public{
         // require(msg.sender != organ);
         // require(_value > 1000);
-        provider.push(msg.sender);
-        // name.push(_name);
+        // provider.push(msg.sender);
+        name.push(_name);
         // value.push(_value);
     }
     
