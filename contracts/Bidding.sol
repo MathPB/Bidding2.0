@@ -6,7 +6,9 @@ contract Bidding{
     
     address[] public provider;
     string[] public name;
-    uint[] public value;
+    uint[] public valor;
+    
+    uint public minimum;
 
     uint i = 0;
     
@@ -14,43 +16,56 @@ contract Bidding{
         organ = msg.sender;
     }
     
-    function enter(string _name, uint _value) public{
+    function enter(string _name, uint _valor) public{
         require(msg.sender != organ);
-        require(_value > 1000);
+        require(_valor > 1000);
         provider.push(msg.sender);
         name.push(_name);
-        value.push(_value);
+        valor.push(_valor);
     }
     
-    // function getProviders() public view returns (address[]){
-    //     return provider;
-    // }
+    function getProviders() public view returns (address[]){
+        return provider;
+    }
     
-    function lowestOffer() public returns(uint minimum)  {
-        require(msg.sender == organ);
-        
+    function lowestOffer() public returns(uint _minimum)  {
         uint smallest = 9999999; 
         
-        for(i = 0; i < value.length; i++){
-            if(value[i] < smallest) {
-                smallest = value[i];
+        for(i = 0; i < valor.length; i++){
+            if(valor[i] < smallest) {
+                smallest = valor[i];
             }
         }
-        return minimum = smallest;
+        _minimum = smallest;
+        minimum = _minimum;
     }
     
-    function pickWinner() public returns(address addrWinner, string nameWinner)  {
+    function addrWinner() public returns(address addrWinner)  {
         require(msg.sender == organ);
         
         uint smallest = 9999999; 
         
-        for(i = 0; i < value.length; i++){
-            if(value[i] < smallest) {
+        for(i = 0; i < valor.length; i++){
+            if(valor[i] < smallest) {
                 addrWinner = provider[i];
-                nameWinner = name[i];
-                smallest = value[i];
+                smallest = valor[i];
             }
         }
+        return addrWinner;
+    }
+    
+    function nameWinner() public returns(string nameWinner)  {
+        require(msg.sender == organ);
+        
+        uint smallest = 9999999; 
+        
+        for(i = 0; i < valor.length; i++){
+            if(valor[i] < smallest) {
+                nameWinner = name[i];
+                smallest = valor[i];
+            }
+        }
+        return nameWinner;
     }
     
 }
